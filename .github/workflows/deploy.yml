@@ -13,6 +13,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Show Repository Files
+        run: |
+          pwd
+          ls -R
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -24,22 +29,22 @@ jobs:
         run: |
           aws cloudformation deploy \
           --stack-name wordpress-network \
-          --template-file cloudformation/network.yaml
+          --template-file networkstack.yaml
 
       - name: Deploy Database Stack
         run: |
           aws cloudformation deploy \
           --stack-name wordpress-database \
-          --template-file cloudformation/database.yaml
+          --template-file databasestack.yaml
 
       - name: Deploy Compute Stack
         run: |
           aws cloudformation deploy \
           --stack-name wordpress-compute \
-          --template-file cloudformation/compute.yaml
+          --template-file computestack.yaml
 
       - name: Deploy Monitoring Stack
         run: |
           aws cloudformation deploy \
           --stack-name wordpress-monitoring \
-          --template-file cloudformation/monitoring.yaml
+          --template-file monitoringstack.yaml
