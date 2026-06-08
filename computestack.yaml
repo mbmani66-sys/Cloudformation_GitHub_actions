@@ -22,13 +22,4 @@ Resources:
           wget https://wordpress.org/latest.tar.gz
           tar -xzf latest.tar.gz
           cp -r wordpress/* /var/www/html/
-
-  LoadBalancer:
-    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-
-  TargetGroup:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-
-  Listener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    
+  
