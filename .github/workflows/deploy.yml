@@ -31,20 +31,8 @@ jobs:
           --stack-name wordpress-network \
           --template-file networkstack.yaml
 
-      - name: Deploy Database Stack
-        run: |
-          aws cloudformation deploy \
-          --stack-name wordpress-database \
-          --template-file databasestack.yaml
-
       - name: Deploy Compute Stack
         run: |
           aws cloudformation deploy \
           --stack-name wordpress-compute \
           --template-file computestack.yaml
-
-      - name: Deploy Monitoring Stack
-        run: |
-          aws cloudformation deploy \
-          --stack-name wordpress-monitoring \
-          --template-file monitoringstack.yaml
