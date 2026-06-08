@@ -1,25 +1,37 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: WordPress Compute Stack
 
+Parameters:
+  LatestAmiId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64
+
 Resources:
 
   WebServer:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: ami-xxxxxxxx
+      ImageId: !Ref LatestAmiId
       InstanceType: t2.micro
 
       UserData:
         Fn::Base64: |
           #!/bin/bash
-          yum update -y
-          amazon-linux-extras install php8.0 -y
-          yum install httpd php php-mysqlnd wget -y
+          dnf update -y
+          dnf install -y httpd php php-mysqlnd wget tar
 
-          systemctl start httpd
           systemctl enable httpd
+          systemctl start httpd
 
+          cd /tmp
           wget https://wordpress.org/latest.tar.gz
           tar -xzf latest.tar.gz
+
           cp -r wordpress/* /var/www/html/
-  
+
+          chown -R apache:apache /var/www/html
+          chmod -R 755 /var/www/html
+
+Outputs:
+  InstanceId:
+    Value: !Ref WebServer
